@@ -2,13 +2,13 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Earth Day — Recognition for a more considered world",
+  title: "Earth Day | A clearer standard for environmental work",
   description:
-    "A sustainability recognition concept helping brands communicate their environmental commitments with clarity, structure, and intention.",
+    "An independent website concept exploring how a sustainability recognition platform could communicate criteria, evidence, and accountability more clearly.",
   openGraph: {
-    title: "Earth Day — Recognition for a more considered world",
+    title: "Earth Day | A clearer standard for environmental work",
     description:
-      "A trusted mark for brands building with greater care.",
+      "A concept for making environmental commitments easier to understand through clear criteria and evidence.",
     type: "website",
   },
 };

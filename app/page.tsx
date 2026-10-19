@@ -38,7 +38,7 @@ function ArrowLink({ children, href = "#apply" }: { children: React.ReactNode; h
 
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const heroTrackRef = useRef<HTMLElement | null>(null);
+  const heroTrackRef = useRef<HTMLDivElement | null>(null);
   const closeMenu = () => setMenuOpen(false);
 
   useEffect(() => {

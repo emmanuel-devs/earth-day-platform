@@ -48,6 +48,7 @@ export default function Home() {
     const copy = track.querySelector<HTMLElement>(".hero-copy");
     const header = track.querySelector<HTMLElement>(".site-header");
     const bottom = track.querySelector<HTMLElement>(".hero-bottom");
+    const frames = Array.from(track.querySelectorAll<HTMLElement>(".hero-frame"));
     if (!scene) return;
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduceMotion) {
@@ -62,19 +63,30 @@ export default function Home() {
         const distance = Math.max(1, track.offsetHeight - window.innerHeight);
         const progress = Math.min(1, Math.max(0, -rect.top / distance));
         scene.style.setProperty("--scene-progress", String(progress));
-        const fade = Math.min(1, Math.max(0, 1 - progress * 5.2));
+        const fade = Math.min(1, Math.max(0, 1 - progress / 0.34));
+        const lift = Math.min(110, progress * 330);
+        const frameOpacities = [
+          Math.max(0, 1 - progress * 3.4),
+          Math.max(0, Math.min(1, progress * 3.4, (1 - progress) * 3.4)),
+          Math.max(0, Math.min(1, (progress - 0.28) * 3.4, (1 - progress) * 3.4)),
+          Math.max(0, Math.min(1, (progress - 0.62) * 3.4)),
+        ];
+        frames.forEach((image, index) => {
+          image.style.opacity = String(frameOpacities[index] ?? 0);
+          image.style.transform = `scale(${1.035 + progress * 0.045})`;
+        });
         if (copy) {
           copy.style.opacity = String(fade);
-          copy.style.transform = `translate3d(0, 0, ${-Math.min(260, progress * 520)}px)`;
+          copy.style.transform = `translate3d(0, ${-lift}px, 0)`;
           copy.style.pointerEvents = progress > 0.16 ? "none" : "auto";
         }
         if (header) {
           header.style.opacity = String(Math.min(1, Math.max(0, 1 - progress * 3.8)));
-          header.style.transform = `translate3d(0, 0, ${-Math.min(100, progress * 220)}px)`;
+          header.style.transform = `translate3d(0, ${-Math.min(55, progress * 165)}px, 0)`;
         }
         if (bottom) {
           bottom.style.opacity = String(fade);
-          bottom.style.transform = `translate3d(0, 0, ${-Math.min(120, progress * 260)}px)`;
+          bottom.style.transform = `translate3d(0, ${-Math.min(65, progress * 195)}px, 0)`;
         }
       });
     };

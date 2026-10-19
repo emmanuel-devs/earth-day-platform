@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowDownRight, ArrowRight, ArrowUpRight, Menu, X } from "lucide-react";
 
 const benefits = [
@@ -39,6 +39,28 @@ function ArrowLink({ children, href = "#apply" }: { children: React.ReactNode; h
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const closeMenu = () => setMenuOpen(false);
+
+  useEffect(() => {
+    const targets = document.querySelectorAll(".intro-main, .benefit-card, .object-photo, .object-copy, .process-heading, .step-row, .standards h2, .standards-intro, .value-card, .community-grid, .footer-cta");
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced || !("IntersectionObserver" in window)) {
+      targets.forEach((target) => target.classList.add("is-visible"));
+      return;
+    }
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: "0px 0px -35px 0px" });
+    targets.forEach((target) => {
+      target.classList.add("reveal-on-scroll");
+      observer.observe(target);
+    });
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <main>

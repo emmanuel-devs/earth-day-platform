@@ -63,8 +63,12 @@ export default function Home() {
         const distance = Math.max(1, track.offsetHeight - window.innerHeight);
         const progress = Math.min(1, Math.max(0, -rect.top / distance));
         scene.style.setProperty("--scene-progress", String(progress));
-        const fade = Math.min(1, Math.max(0, 1 - progress / 0.34));
-        const lift = Math.min(110, progress * 330);
+        // Let the hero message stay readable at first, then clearly exit as the
+        // landscape sequence advances. Values are written inline for reliable scroll control.
+        const copyProgress = Math.min(1, Math.max(0, progress / 0.48));
+        const fade = 1 - copyProgress;
+        const lift = Math.min(190, copyProgress * 190);
+        const copyScale = 1 - copyProgress * 0.035;
         const frameOpacities = [
           Math.max(0, 1 - progress * 3.4),
           Math.max(0, Math.min(1, progress * 3.4, (1 - progress) * 3.4)),
@@ -77,16 +81,17 @@ export default function Home() {
         });
         if (copy) {
           copy.style.opacity = String(fade);
-          copy.style.transform = `translate3d(0, ${-lift}px, 0)`;
-          copy.style.pointerEvents = progress > 0.16 ? "none" : "auto";
+          copy.style.transform = `translate3d(0, ${-lift}px, 0) scale(${copyScale})`;
+          copy.style.visibility = copyProgress >= 1 ? "hidden" : "visible";
+          copy.style.pointerEvents = copyProgress > 0.12 ? "none" : "auto";
         }
         if (header) {
           header.style.opacity = String(Math.min(1, Math.max(0, 1 - progress * 3.8)));
           header.style.transform = `translate3d(0, ${-Math.min(55, progress * 165)}px, 0)`;
         }
         if (bottom) {
-          bottom.style.opacity = String(fade);
-          bottom.style.transform = `translate3d(0, ${-Math.min(65, progress * 195)}px, 0)`;
+          bottom.style.opacity = String(Math.max(0, 1 - copyProgress));
+          bottom.style.transform = `translate3d(0, ${-Math.min(95, copyProgress * 95)}px, 0)`;
         }
       });
     };

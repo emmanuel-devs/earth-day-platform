@@ -1,46 +1,39 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowDown, ArrowRight, ArrowUpRight, Menu, X } from "lucide-react";
+import { ArrowDownRight, ArrowRight, ArrowUpRight, Menu, X } from "lucide-react";
 
-const principles = [
-  {
-    number: "01",
-    title: "Evidence before language",
-    description: "Environmental statements should be connected to information that can be explained, reviewed, and kept current.",
-    note: "SHOW THE WORK",
-  },
-  {
-    number: "02",
-    title: "Progress over perfection",
-    description: "A useful framework should make room for honest progress, not reward the loudest promise or the cleanest campaign.",
-    note: "MAKE ROOM TO IMPROVE",
-    spotlight: true,
-  },
-  {
-    number: "03",
-    title: "Clarity for everyone",
-    description: "People should be able to understand what a recognition mark means, what it does not mean, and why it was awarded.",
-    note: "MAKE IT UNDERSTANDABLE",
-  },
+const benefits = [
+  { number: "01", title: "Build brand trust", text: "Give people a clearer way to understand the care behind your commitments." },
+  { number: "02", title: "Make progress visible", text: "Turn considered action into a signal your customers can recognise." },
+  { number: "03", title: "Create shared standards", text: "Bring your team around a more thoughtful approach to environmental impact." },
+  { number: "04", title: "Move with intention", text: "Make sustainability part of the way your brand shows up every day." },
 ];
 
-const stages = [
-  { number: "01", title: "Share the picture", detail: "Describe your work, your current commitments, and the areas where you are making changes." },
-  { number: "02", title: "Gather the evidence", detail: "Connect each proposed claim to supporting information, with gaps made visible rather than hidden." },
-  { number: "03", title: "Review the details", detail: "Assess the material against published criteria and make the reasoning clear to the applicant." },
-  { number: "04", title: "Communicate the outcome", detail: "Explain the decision, its scope, and any next steps in language people can understand." },
+const steps = [
+  { number: "01", title: "Apply", text: "Tell us about your brand, your work, and the environmental commitments guiding it." },
+  { number: "02", title: "Criteria evaluation", text: "Your application is mapped against a clear framework of proposed recognition criteria." },
+  { number: "03", title: "Review", text: "The details are reviewed to understand your approach, evidence, and next steps." },
+  { number: "04", title: "Receive the mark", text: "Approved applicants can use the recognition mark across relevant brand touchpoints." },
 ];
 
-function BrandMark() {
+const values = [
+  { number: "01", title: "Environmental standards", text: "A considered framework for meaningful action." },
+  { number: "02", title: "Transparent documentation", text: "Clear information behind every commitment." },
+  { number: "03", title: "Accountable metrics", text: "Progress that can be explained and understood." },
+  { number: "04", title: "Modern criteria", text: "A framework designed to evolve with the work." },
+];
+
+function Wordmark({ footer = false }: { footer?: boolean }) {
   return (
-    <span className="brand-mark" aria-hidden="true">
-      <span />
-      <span />
-      <span />
-      <span />
-    </span>
+    <div className={footer ? "wordmark wordmark-footer" : "wordmark"} aria-label="Earth Day">
+      <span>EARTH</span><span>DAY<span className="wordmark-dot">®</span></span>
+    </div>
   );
+}
+
+function ArrowLink({ children, href = "#apply" }: { children: React.ReactNode; href?: string }) {
+  return <a className="arrow-link" href={href}>{children}<ArrowUpRight size={15} strokeWidth={1.8} /></a>;
 }
 
 export default function Home() {
@@ -48,165 +41,140 @@ export default function Home() {
   const closeMenu = () => setMenuOpen(false);
 
   return (
-    <main id="top">
-      <a className="skip-link" href="#main-content">Skip to content</a>
-      <header className="masthead">
-        <a className="brand" href="#top" aria-label="Earth Day concept home">
-          <BrandMark />
-          <span>EARTH DAY<span className="brand-period">.</span></span>
-        </a>
-        <p className="masthead-note">A proposed recognition framework</p>
-        <button
-          className="menu-toggle"
-          type="button"
-          aria-label={menuOpen ? "Close navigation" : "Open navigation"}
-          aria-expanded={menuOpen}
-          aria-controls="primary-navigation"
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
-          {menuOpen ? <X size={21} /> : <Menu size={21} />}
-        </button>
-        <nav id="primary-navigation" className={menuOpen ? "navigation navigation-open" : "navigation"} aria-label="Main navigation">
-          <a href="#principles" onClick={closeMenu}>Principles</a>
-          <a href="#method" onClick={closeMenu}>Method</a>
-          <a href="#framework" onClick={closeMenu}>Framework</a>
-          <a className="nav-link" href="#concept-note" onClick={closeMenu}>About this concept <ArrowUpRight size={14} /></a>
-        </nav>
-      </header>
+    <main>
+      <section className="hero" id="top">
+        <div className="hero-image" aria-hidden="true" />
+        <div className="hero-shade" aria-hidden="true" />
+        <header className="site-header">
+          <a className="brand" href="#top" aria-label="Earth Day home"><span className="brand-symbol">e.</span><span>EARTH DAY</span></a>
+          <button className="menu-toggle" aria-label={menuOpen ? "Close menu" : "Open menu"} aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button>
+          <nav className={menuOpen ? "nav nav-open" : "nav"} aria-label="Main navigation">
+            <a href="#about" onClick={closeMenu}>About</a>
+            <a href="#insights" onClick={closeMenu}>Insights</a>
+            <a href="#criteria" onClick={closeMenu}>Criteria</a>
+            <a href="#community" onClick={closeMenu}>Community</a>
+            <a href="#brand" onClick={closeMenu}>Brand</a>
+            <a className="nav-apply" href="#apply" onClick={closeMenu}>Apply now <ArrowUpRight size={14} /></a>
+          </nav>
+        </header>
 
-      <section className="hero" aria-labelledby="hero-title">
-        <div className="hero-topline">
-          <span><i className="status-dot" /> FIELD NOTE 001 / ENVIRONMENT</span>
-          <span>CLARITY IS A FORM OF CARE</span>
-        </div>
-        <div className="hero-layout" id="main-content">
-          <div className="hero-copy">
-            <p className="eyebrow">A better way to talk about environmental work</p>
-            <h1 id="hero-title">Make the work<br />behind the promise<br /><em>easier to see.</em></h1>
-            <p className="hero-description">A concept for a sustainability recognition platform built around clear criteria, meaningful evidence, and honest communication.</p>
-            <div className="hero-actions">
-              <a className="button button-primary" href="#method">Explore the proposed method <ArrowDown size={16} /></a>
-              <a className="text-link" href="#principles">What should count? <ArrowUpRight size={15} /></a>
-            </div>
+        <div className="hero-copy">
+          <p className="eyebrow eyebrow-light"><span className="eyebrow-dot" /> A recognition platform for a changing world</p>
+          <h1>A trusted mark for brands building with <em>greater care.</em></h1>
+          <p className="hero-description">A considered approach to sustainability recognition, helping thoughtful brands make their environmental commitments easier to see, understand, and trust.</p>
+          <div className="hero-actions">
+            <a className="button button-sage" href="#apply">Explore application <ArrowUpRight size={16} /></a>
+            <a className="button button-outline-light" href="#criteria">See the criteria <ArrowDownRight size={16} /></a>
           </div>
-
-          <aside className="standard-sheet" aria-label="Illustrative recognition mark, not a real certification">
-            <div className="sheet-top"><span>EARTH DAY / STANDARD</span><span>ED–01</span></div>
-            <div className="seal-wrap">
-              <div className="seal-ring seal-ring-outer" />
-              <div className="seal-ring seal-ring-inner" />
-              <div className="seal-cross seal-cross-horizontal" />
-              <div className="seal-cross seal-cross-vertical" />
-              <div className="seal-center"><BrandMark /><span>EARTH<br />DAY</span></div>
-              <span className="seal-orbit seal-orbit-one">EVIDENCE</span>
-              <span className="seal-orbit seal-orbit-two">ACCOUNTABILITY</span>
-            </div>
-            <div className="sheet-bottom">
-              <div><span className="sheet-label">INTENT</span><strong>Make claims clearer.</strong></div>
-              <div><span className="sheet-label">STATUS</span><strong>Concept study</strong></div>
-            </div>
-            <span className="sheet-watermark" aria-hidden="true">ED</span>
-          </aside>
         </div>
-        <div className="hero-foot">
-          <span>01 / A FRAMEWORK FOR BETTER QUESTIONS</span>
-          <span className="hero-foot-note">Not a live certification service</span>
+
+        <div className="hero-bottom">
+          <div className="hero-caption"><span className="caption-line" /> <span>For brands choosing a more considered future</span></div>
+          <span className="hero-index">01 / 06</span>
+        </div>
+        <Wordmark />
+        <div className="partner-strip">
+          <span className="partner-label">A better standard, shared</span>
+          <div className="partner-logos" aria-label="Illustrative partner categories">
+            <span className="partner-logo partner-serif">common<span>ground</span></span>
+            <span className="partner-logo partner-spaced">FORM / FIELD</span>
+            <span className="partner-logo partner-serif partner-italic">everwell</span>
+            <span className="partner-logo partner-heavy">NORTH<span>®</span></span>
+            <span className="partner-logo partner-spaced">KIN & CO.</span>
+          </div>
+          <span className="concept-note">Concept identities for presentation only</span>
         </div>
       </section>
 
-      <section className="opening-note" aria-labelledby="opening-title">
-        <div className="section-label"><span>THE STARTING POINT</span><span>01 — 03</span></div>
-        <div className="opening-grid">
-          <p className="margin-note">A mark only means something when people understand what sits behind it.</p>
-          <div className="opening-copy">
-            <h2 id="opening-title">Good intentions are a start.<br /><em>Clear evidence is better.</em></h2>
-            <p>Environmental language is easy to publish and harder to evaluate. This concept explores a more useful alternative: a recognition system that explains its expectations, makes room for evidence, and communicates its limits.</p>
-          </div>
+      <section className="intro section-light" id="about">
+        <div className="section-kicker"><span>01</span><span>WHY IT MATTERS</span></div>
+        <div className="intro-main">
+          <p className="eyebrow"><span className="eyebrow-dot" /> Recognition with intention</p>
+          <h2>Good work deserves<br />to be <em>understood.</em></h2>
+          <p className="intro-description">Sustainability should be more than a statement. Earth Day is a concept for a clearer, more thoughtful way for brands to communicate the work behind their values.</p>
         </div>
-        <div className="annotation-line"><span /> LESS PROMISE. MORE CONTEXT.</div>
-      </section>
-
-      <section className="principles-section" id="principles" aria-labelledby="principles-title">
-        <div className="section-label"><span>WHAT SHOULD COUNT</span><span>02 — 03</span></div>
-        <div className="principles-heading">
-          <p className="eyebrow">Three proposed principles</p>
-          <h2 id="principles-title">A useful standard<br />starts with <em>better questions.</em></h2>
-          <p className="principles-intro">Not a checklist for looking sustainable. A starting point for explaining the work clearly.</p>
-        </div>
-        <div className="principle-list">
-          {principles.map((item) => (
-            <article className={item.spotlight ? "principle-row principle-row-spotlight" : "principle-row"} key={item.number}>
-              <span className="principle-number">{item.number}</span>
-              <h3>{item.title}</h3>
-              <p>{item.description}</p>
-              <span className="principle-note">{item.note}</span>
+        <div className="benefit-grid" id="insights">
+          {benefits.map((item) => (
+            <article className="benefit-card" key={item.number}>
+              <span className="number-tag">[ {item.number} ]</span>
+              <div><h3>{item.title}</h3><p>{item.text}</p></div>
+              <span className="card-arrow"><ArrowUpRight size={17} /></span>
             </article>
           ))}
         </div>
-        <p className="section-footnote"><span>NOTE 01</span> These are proposed design principles, not published or independently validated certification criteria.</p>
+        <div className="intro-foot"><span>Less noise. More meaning.</span><span>Designed for the long view <ArrowRight size={14} /></span></div>
       </section>
 
-      <section className="method-section" id="method" aria-labelledby="method-title">
-        <div className="method-header">
-          <div className="section-label section-label-light"><span>HOW IT COULD WORK</span><span>03 — 03</span></div>
-          <div className="method-title-row">
-            <h2 id="method-title">From claim<br />to <em>context.</em></h2>
-            <p>A transparent process should show what is being reviewed, how decisions are made, and what recognition does and does not represent.</p>
-          </div>
+      <section className="object-section" id="brand">
+        <div className="object-photo" role="img" aria-label="A minimal forest-green recognition box resting on a moss-covered log in a quiet forest">
+          <div className="photo-label"><span>EARTH DAY</span><span>RECOGNITION / 001</span></div>
+          <div className="recognition-box"><span className="box-small">A MARK FOR</span><span className="box-large">GOOD<br />INTENTIONS.</span><span className="box-bottom">EARTH DAY® <span>EST. 2025</span></span></div>
+          <span className="photo-index">OBJECT STUDY — 001</span>
         </div>
-        <div className="method-body">
-          <div className="method-aside">
-            <span className="method-index">PROPOSED PATH / 04 STAGES</span>
-            <div className="mini-stamp"><BrandMark /><span>EARTH DAY<br />FRAMEWORK STUDY</span></div>
-          </div>
-          <div className="stage-list">
-            {stages.map((stage, index) => (
-              <article className="stage-row" key={stage.number}>
-                <span className="stage-number">{stage.number}</span>
-                <div className="stage-main"><h3>{stage.title}</h3><p>{stage.detail}</p></div>
-                <span className="stage-arrow" aria-hidden="true">{index === stages.length - 1 ? <ArrowUpRight size={20} /> : <ArrowRight size={20} />}</span>
+        <div className="object-copy">
+          <div className="section-kicker section-kicker-light"><span>02</span><span>THE MARK, IN CONTEXT</span></div>
+          <p className="eyebrow eyebrow-light"><span className="eyebrow-dot" /> Made to move with your brand</p>
+          <h2>Designed to live across the <em>modern brand world.</em></h2>
+          <p>A considered identity should feel at home wherever your brand meets the world. From packaging and digital storefronts to annual reports and everyday communication.</p>
+          <ArrowLink href="#community">Explore the approach</ArrowLink>
+          <div className="object-meta"><span>01 / A versatile identity</span><span>02 / Built for clarity</span><span>03 / Made to be understood</span></div>
+        </div>
+      </section>
+
+      <section className="process section-light" id="apply">
+        <div className="section-kicker"><span>03</span><span>HOW IT WORKS</span></div>
+        <div className="process-heading">
+          <div><p className="eyebrow"><span className="eyebrow-dot" /> A clear path forward</p><h2>A simple process.<br /><em>A considered outcome.</em></h2></div>
+          <p className="process-intro">A structured journey built to make expectations clear, from the first conversation to the recognition mark.</p>
+        </div>
+        <div className="steps-list">
+          {steps.map((step, i) => (
+            <article className="step-row" key={step.number}>
+              <span className="step-number">{step.number}</span>
+              <h3>{step.title}</h3>
+              <p>{step.text}</p>
+              <span className="step-symbol">{i === 3 ? <ArrowUpRight size={20} /> : <ArrowRight size={20} />}</span>
+            </article>
+          ))}
+        </div>
+        <p className="process-disclaimer">Illustrative process for this design concept. Final eligibility, review stages, and approval requirements would need to be defined by the platform.</p>
+      </section>
+
+      <section className="standards" id="criteria">
+        <div className="standards-landscape" aria-hidden="true" />
+        <div className="standards-content">
+          <div className="section-kicker section-kicker-light"><span>04</span><span>THE FOUNDATION</span></div>
+          <p className="eyebrow eyebrow-light"><span className="eyebrow-dot" /> Clear by design</p>
+          <h2>Grounded in<br /><em>clearer standards.</em></h2>
+          <p className="standards-intro">Trust begins with knowing what a mark means. Our proposed framework puts clarity, evidence, and accountability at the centre of recognition.</p>
+          <div className="values-grid">
+            {values.map((value) => (
+              <article className="value-card" key={value.number}>
+                <span>{value.number}</span><h3>{value.title}</h3><p>{value.text}</p>
               </article>
             ))}
           </div>
-        </div>
-        <div className="method-caveat"><span>IMPORTANT</span><p>This is an illustrative process for a portfolio concept. Actual assessment rules, eligibility, governance, and approval procedures would need to be established before launch.</p></div>
-      </section>
-
-      <section className="framework-section" id="framework" aria-labelledby="framework-title">
-        <div className="framework-top"><span>THE TEST IS NOT HOW IT LOOKS.</span><span>IT IS WHAT IT CAN EXPLAIN.</span></div>
-        <div className="framework-grid">
-          <div className="framework-heading">
-            <p className="eyebrow">The credibility question</p>
-            <h2 id="framework-title">What does the mark <em>actually mean?</em></h2>
-          </div>
-          <div className="framework-copy">
-            <p>A credible recognition system should make its scope easy to find. People should be able to understand the criteria, the evidence considered, the decision process, and the limitations.</p>
-            <ul className="checklist">
-              <li><span>01</span> Published criteria, written in plain language</li>
-              <li><span>02</span> Evidence connected to each relevant claim</li>
-              <li><span>03</span> Clear scope and limitations</li>
-              <li><span>04</span> A review process that can be explained</li>
-            </ul>
-          </div>
-        </div>
-        <div className="concept-note" id="concept-note">
-          <span className="concept-note-mark">i</span>
-          <p><strong>Portfolio concept only.</strong> Earth Day is not presented here as an operating certification body. The mark, principles, and process are illustrative. No certification, endorsement, partner relationship, or environmental performance claim is implied.</p>
+          <div className="standards-note"><span className="note-mark">i</span><p>Earth Day is presented here as a website concept. No certification, endorsement, or environmental performance claim is implied.</p></div>
         </div>
       </section>
 
-      <footer className="site-footer">
-        <div className="footer-topline"><span>EARTH DAY / CONCEPT 001</span><a href="#top">Back to top <ArrowUpRight size={14} /></a></div>
-        <div className="footer-main">
-          <p className="eyebrow">A clearer conversation starts here</p>
-          <h2>Make the promise<br /><em>mean something.</em></h2>
-          <a className="button button-light" href="#concept-note">Read the concept note <ArrowUpRight size={16} /></a>
+      <section className="community section-light" id="community">
+        <div className="community-top"><span>05 / A SHARED DIRECTION</span><span>For people building with care <ArrowDownRight size={14} /></span></div>
+        <div className="community-grid">
+          <h2>Progress is a practice.<br /><em>Not a claim.</em></h2>
+          <p>We believe the most meaningful change starts with clear intentions, honest communication, and the willingness to keep improving.</p>
         </div>
-        <div className="footer-bottom">
-          <a className="brand brand-footer" href="#top"><BrandMark /><span>EARTH DAY<span className="brand-period">.</span></span></a>
-          <span>INDEPENDENT WEBSITE CONCEPT / 2026</span>
-          <span>DESIGNED AROUND CLARITY, NOT CLAIMS.</span>
+      </section>
+
+      <footer className="footer">
+        <div className="footer-cta">
+          <p className="eyebrow eyebrow-dark"><span className="eyebrow-dot" /> The next step starts here</p>
+          <h2>Ready to make your values <em>more visible?</em></h2>
+          <p>Start a conversation about what thoughtful recognition could look like for your brand.</p>
+          <div className="footer-actions"><a className="button button-dark" href="mailto:hello@earthday.example?subject=Earth%20Day%20platform%20enquiry">Start a conversation <ArrowUpRight size={16} /></a><a className="button button-outline-dark" href="#criteria">Review the framework <ArrowDownRight size={16} /></a></div>
         </div>
+        <Wordmark footer />
+        <div className="footer-bottom"><a className="brand brand-footer" href="#top"><span className="brand-symbol">e.</span><span>EARTH DAY</span></a><span>© 2026 EARTH DAY CONCEPT</span><div><a href="#about">About</a><a href="#criteria">Criteria</a><a href="mailto:hello@earthday.example">Contact</a></div><span className="footer-location">A concept for a more considered world.</span></div>
       </footer>
     </main>
   );

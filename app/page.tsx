@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowDownRight, ArrowRight, ArrowUpRight, Menu, X } from "lucide-react";
 
 const benefits = [
@@ -38,7 +38,55 @@ function ArrowLink({ children, href = "#apply" }: { children: React.ReactNode; h
 
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const heroTrackRef = useRef<HTMLElement | null>(null);
   const closeMenu = () => setMenuOpen(false);
+
+  useEffect(() => {
+    const track = heroTrackRef.current;
+    if (!track) return;
+    const scene = track.querySelector<HTMLElement>(".hero-scene");
+    const copy = track.querySelector<HTMLElement>(".hero-copy");
+    const header = track.querySelector<HTMLElement>(".site-header");
+    const bottom = track.querySelector<HTMLElement>(".hero-bottom");
+    if (!scene) return;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduceMotion) {
+      scene.style.setProperty("--scene-progress", "0");
+      return;
+    }
+    let frame = 0;
+    const update = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        const rect = track.getBoundingClientRect();
+        const distance = Math.max(1, track.offsetHeight - window.innerHeight);
+        const progress = Math.min(1, Math.max(0, -rect.top / distance));
+        scene.style.setProperty("--scene-progress", String(progress));
+        const fade = Math.min(1, Math.max(0, 1 - progress * 5.2));
+        if (copy) {
+          copy.style.opacity = String(fade);
+          copy.style.transform = `translate3d(0, 0, ${-Math.min(260, progress * 520)}px)`;
+          copy.style.pointerEvents = progress > 0.16 ? "none" : "auto";
+        }
+        if (header) {
+          header.style.opacity = String(Math.min(1, Math.max(0, 1 - progress * 3.8)));
+          header.style.transform = `translate3d(0, 0, ${-Math.min(100, progress * 220)}px)`;
+        }
+        if (bottom) {
+          bottom.style.opacity = String(fade);
+          bottom.style.transform = `translate3d(0, 0, ${-Math.min(120, progress * 260)}px)`;
+        }
+      });
+    };
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, []);
 
   useEffect(() => {
     const targets = document.querySelectorAll(".intro-main, .benefit-card, .object-photo, .object-copy, .process-heading, .step-row, .standards h2, .standards-intro, .value-card, .community-grid, .footer-cta");
@@ -65,46 +113,54 @@ export default function Home() {
   return (
     <main>
       <section className="hero" id="top">
-        <div className="hero-image" aria-hidden="true" />
-        <div className="hero-shade" aria-hidden="true" />
-        <header className="site-header">
-          <a className="brand" href="#top" aria-label="Earth Day home"><span className="brand-symbol">e.</span><span>EARTH DAY</span></a>
-          <button className="menu-toggle" aria-label={menuOpen ? "Close menu" : "Open menu"} aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button>
-          <nav className={menuOpen ? "nav nav-open" : "nav"} aria-label="Main navigation">
-            <a href="#about" onClick={closeMenu}>About</a>
-            <a href="#insights" onClick={closeMenu}>Insights</a>
-            <a href="#criteria" onClick={closeMenu}>Criteria</a>
-            <a href="#community" onClick={closeMenu}>Community</a>
-            <a href="#brand" onClick={closeMenu}>Brand</a>
-            <a className="nav-apply" href="#apply" onClick={closeMenu}>Apply now <ArrowUpRight size={14} /></a>
-          </nav>
-        </header>
-
-        <div className="hero-copy">
-          <p className="eyebrow eyebrow-light"><span className="eyebrow-dot" /> A recognition platform for a changing world</p>
-          <h1>A trusted mark for brands building with <em>greater care.</em></h1>
-          <p className="hero-description">A considered approach to sustainability recognition, helping thoughtful brands make their environmental commitments easier to see, understand, and trust.</p>
-          <div className="hero-actions">
-            <a className="button button-sage" href="#apply">Explore application <ArrowUpRight size={16} /></a>
-            <a className="button button-outline-light" href="#criteria">See the criteria <ArrowDownRight size={16} /></a>
+        <div className="hero-scroll-track" ref={heroTrackRef}>
+          <div className="hero-scene">
+            <div className="hero-frame hero-frame-one" aria-hidden="true" />
+            <div className="hero-frame hero-frame-two" aria-hidden="true" />
+            <div className="hero-frame hero-frame-three" aria-hidden="true" />
+            <div className="hero-frame hero-frame-four" aria-hidden="true" />
+            <div className="hero-shade" aria-hidden="true" />
+            <header className="site-header">
+              <a className="brand" href="#top" aria-label="Earth Day home"><span className="brand-symbol">e.</span><span>EARTH DAY</span></a>
+              <button className="menu-toggle" aria-label={menuOpen ? "Close menu" : "Open menu"} aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button>
+              <nav className={menuOpen ? "nav nav-open" : "nav"} aria-label="Main navigation">
+                <a href="#about" onClick={closeMenu}>About</a>
+                <a href="#insights" onClick={closeMenu}>Insights</a>
+                <a href="#criteria" onClick={closeMenu}>Criteria</a>
+                <a href="#community" onClick={closeMenu}>Community</a>
+                <a href="#brand" onClick={closeMenu}>Brand</a>
+                <a className="nav-apply" href="#apply" onClick={closeMenu}>Apply now <ArrowUpRight size={14} /></a>
+              </nav>
+            </header>
+            <div className="hero-copy">
+              <p className="eyebrow eyebrow-light"><span className="eyebrow-dot" /> A recognition platform for a changing world</p>
+              <h1>A trusted mark for brands building with <em>greater care.</em></h1>
+              <p className="hero-description">A considered approach to sustainability recognition, helping thoughtful brands make their environmental commitments easier to see, understand, and trust.</p>
+              <div className="hero-actions">
+                <a className="button button-sage" href="#apply">Explore application <ArrowUpRight size={16} /></a>
+                <a className="button button-outline-light" href="#criteria">See the criteria <ArrowDownRight size={16} /></a>
+              </div>
+            </div>
+            <div className="hero-bottom">
+              <div className="hero-caption"><span className="caption-line" /> <span>For brands choosing a more considered future</span></div>
+              <span className="hero-index">SCROLL TO EXPLORE ↓</span>
+            </div>
+            <div className="hero-scene-progress" aria-hidden="true"><span /></div>
           </div>
         </div>
-
-        <div className="hero-bottom">
-          <div className="hero-caption"><span className="caption-line" /> <span>For brands choosing a more considered future</span></div>
-          <span className="hero-index">01 / 06</span>
-        </div>
-        <Wordmark />
-        <div className="partner-strip">
-          <span className="partner-label">A better standard, shared</span>
-          <div className="partner-logos" aria-label="Illustrative partner categories">
-            <span className="partner-logo partner-serif">common<span>ground</span></span>
-            <span className="partner-logo partner-spaced">FORM / FIELD</span>
-            <span className="partner-logo partner-serif partner-italic">everwell</span>
-            <span className="partner-logo partner-heavy">NORTH<span>®</span></span>
-            <span className="partner-logo partner-spaced">KIN & CO.</span>
+        <div className="hero-branding">
+          <Wordmark />
+          <div className="partner-strip">
+            <span className="partner-label">A better standard, shared</span>
+            <div className="partner-logos" aria-label="Illustrative partner categories">
+              <span className="partner-logo partner-serif">common<span>ground</span></span>
+              <span className="partner-logo partner-spaced">FORM / FIELD</span>
+              <span className="partner-logo partner-serif partner-italic">everwell</span>
+              <span className="partner-logo partner-heavy">NORTH<span>®</span></span>
+              <span className="partner-logo partner-spaced">KIN & CO.</span>
+            </div>
+            <span className="concept-note">Concept identities for presentation only</span>
           </div>
-          <span className="concept-note">Concept identities for presentation only</span>
         </div>
       </section>
 

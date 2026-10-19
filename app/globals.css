@@ -291,7 +291,7 @@ h2{font-size:clamp(42px,6.2vw,78px);line-height:1.02;letter-spacing:-.075em;font
 .hero-scene .hero-shade{position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(9,17,10,.46) 0%,rgba(14,26,15,.25) 30%,rgba(15,28,16,.46) 65%,rgba(15,28,16,.86) 100%),linear-gradient(90deg,rgba(8,15,9,.26),transparent 78%)}
 .hero-scene .site-header{margin:0 5.2vw}
 .hero-scene .hero-copy{margin:clamp(54px,11vh,118px) auto 0;padding:0 24px;max-width:900px;transition:opacity .08s linear}
-.hero-scene .hero h1{max-width:900px}
+.hero-scene h1{max-width:900px}
 .hero-scene .hero-description{max-width:430px}
 .hero-scene .hero-bottom{margin:clamp(45px,8vh,90px) 5.2vw 0}
 .hero-scene-progress{position:absolute;bottom:0;left:0;right:0;height:2px;background:rgba(249,248,244,.2);z-index:6}
@@ -309,7 +309,7 @@ h2{font-size:clamp(42px,6.2vw,78px);line-height:1.02;letter-spacing:-.075em;font
  .hero-frame-four{background-position:53% center}
  .hero-scene .site-header{margin:0 22px}
  .hero-scene .hero-copy{margin-top:clamp(58px,11vh,95px);padding:0 2px}
- .hero-scene .hero h1{font-size:clamp(43px,11.8vw,66px);line-height:1.02}
+ .hero-scene h1{font-size:clamp(43px,11.8vw,66px);line-height:1.02}
  .hero-scene .hero-description{max-width:350px;font-size:12px;line-height:1.7;margin:20px auto 0}
  .hero-scene .hero-actions{gap:9px;flex-wrap:wrap}
  .hero-scene .hero-actions .button{font-size:10px;padding:12px 14px}

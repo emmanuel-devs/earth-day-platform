@@ -59,9 +59,11 @@ export default function Home() {
     const update = () => {
       cancelAnimationFrame(frame);
       frame = requestAnimationFrame(() => {
-        const rect = track.getBoundingClientRect();
-        const distance = Math.max(1, track.offsetHeight - window.innerHeight);
-        const progress = Math.min(1, Math.max(0, -rect.top / distance));
+        // Calculate progress from the document scroll position rather than the
+        // sticky element's moving viewport rectangle. This is more stable on mobile Safari.
+        const trackTop = track.getBoundingClientRect().top + window.scrollY;
+        const distance = Math.max(1, track.offsetHeight - document.documentElement.clientHeight);
+        const progress = Math.min(1, Math.max(0, (window.scrollY - trackTop) / distance));
         scene.style.setProperty("--scene-progress", String(progress));
         // Let the hero message stay readable at first, then clearly exit as the
         // landscape sequence advances. Values are written inline for reliable scroll control.
